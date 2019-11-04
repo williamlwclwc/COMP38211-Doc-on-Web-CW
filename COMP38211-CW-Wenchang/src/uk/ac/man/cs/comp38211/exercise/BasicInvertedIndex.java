@@ -164,9 +164,9 @@ public class BasicInvertedIndex extends Configured implements Tool
         }
     }
 
-    public static class Reduce extends Reducer<Text, HashMapWritable<Text, ArrayListWritable<IntWritable>>, Text, ArrayListWritable<HashMapWritable<Text, ArrayListWritable<IntWritable>>>>
+    public static class Reduce extends Reducer<Text, HashMapWritable<Text, ArrayListWritable<IntWritable>>, Text, HashMapWritable<Text, ArrayListWritable<Writable>>>
     {
-    	private final static ArrayListWritable<HashMapWritable<Text, ArrayListWritable<IntWritable>>> iIndex = new ArrayListWritable<HashMapWritable<Text, ArrayListWritable<IntWritable>>>();
+    	private final static HashMapWritable<Text, ArrayListWritable<Writable>> iIndex = new HashMapWritable<Text, ArrayListWritable<Writable>>();
     	
     	// TODO
         // This Reduce Job should take in a key and an iterable of file names
@@ -178,7 +178,7 @@ public class BasicInvertedIndex extends Configured implements Tool
                 Context context) throws IOException, InterruptedException
         {
         	Iterator<HashMapWritable<Text, ArrayListWritable<IntWritable>>> itr = values.iterator();
-        	HashMapWritable<Text, ArrayListWritable<IntWritable>> summarizeMap = new HashMapWritable<Text, ArrayListWritable<IntWritable>>(itr.next());
+        	HashMapWritable<Text, ArrayListWritable<Writable>> summarizeMap = new HashMapWritable<Text, ArrayListWritable<Writable>>();
         	while(itr.hasNext()) {
         		// get each pair of <filename, posIndex> 
         		Iterator<java.util.Map.Entry<Text, ArrayListWritable<IntWritable>>> filenameIterator = itr.next().entrySet().iterator();
@@ -188,17 +188,27 @@ public class BasicInvertedIndex extends Configured implements Tool
             		ArrayListWritable<IntWritable> valuePos = new ArrayListWritable<IntWritable>(entry.getValue());
             		if(summarizeMap.containsKey(fileName)) {
             			// if already have this fileName in the hashmap
-            			summarizeMap.get(fileName).addAll(valuePos);
+            			((ArrayListWritable<IntWritable>) summarizeMap.get(fileName).get(4)).addAll(valuePos);
             		} else {
             			// else create a new pair in hashmap
-            			summarizeMap.put(fileName, valuePos);
+            			ArrayListWritable<Writable> outListPerFile = new ArrayListWritable<Writable>();
+            			IntWritable tF = new IntWritable(0);
+                		IntWritable dF = new IntWritable(0);
+                		DoubleWritable iDF = new DoubleWritable(0.0);
+                		DoubleWritable tfIDF = new DoubleWritable(0.0);
+                		outListPerFile.add(tF);
+                		outListPerFile.add(dF);
+                		outListPerFile.add(iDF);
+                		outListPerFile.add(tfIDF);
+                		outListPerFile.add(valuePos);
+            			summarizeMap.put(fileName, outListPerFile);
             		}
                 }
         	}
         	// System.out.println("reduced token: " + key);
-        	iIndex.add(summarizeMap);
+        	iIndex.putAll(summarizeMap);
         	context.write(key, iIndex);
-        	iIndex.removeAll(iIndex);
+        	iIndex.clear();
         }
     }
 
@@ -272,7 +282,7 @@ public class BasicInvertedIndex extends Configured implements Tool
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(HashMapWritable.class);
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(ArrayListWritable.class);
+        job.setOutputValueClass(HashMapWritable.class);
 
         // Set the input and output file paths
         FileInputFormat.setInputPaths(job, new Path(inputPath));
