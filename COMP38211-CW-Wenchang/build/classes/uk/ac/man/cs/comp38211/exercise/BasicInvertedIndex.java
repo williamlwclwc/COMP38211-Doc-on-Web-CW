@@ -102,8 +102,8 @@ public class BasicInvertedIndex extends Configured implements Tool
         	String line = value.toString();
         	StringTokenizer itr = new StringTokenizer(line);
         	
-        	Integer pos_index = 0;
-        	// Integer cnt1 = 0, cnt2 = 0;
+        	int pos_index = 0;
+        	// int cnt1 = 0, cnt2 = 0;
         	while(itr.hasMoreTokens()) {
         		String currentToken = itr.nextToken();
         		pos_index++;
@@ -148,7 +148,7 @@ public class BasicInvertedIndex extends Configured implements Tool
         	
         	// in-mapped aggregation cont.
         	// iterate hashmap and write map results
-        	// Integer cnt0 = 0;
+        	// int cnt0 = 0;
         	Iterator<java.util.Map.Entry<Text, ArrayListWritable<IntWritable>>> iterator = localCache.entrySet().iterator();
         	while(iterator.hasNext()) {
         		// cnt0++;
@@ -205,6 +205,30 @@ public class BasicInvertedIndex extends Configured implements Tool
             		}
                 }
         	}
+        	
+        	// calculate tf df idf tfidf
+        	Iterator<java.util.Map.Entry<Text, ArrayListWritable<Writable>>> summarizeIterator = summarizeMap.entrySet().iterator();
+        	// df(t): in how many docs this token appears
+        	int df = summarizeMap.size();
+        	while(summarizeIterator.hasNext()) {
+        		java.util.Map.Entry<Text, ArrayListWritable<Writable>> entry = summarizeIterator.next();
+        		ArrayListWritable<Writable> summaryList = entry.getValue();
+        		// tf(t, d): token t occurs how many times in doc d
+        		ArrayListWritable<IntWritable> positions = (ArrayListWritable<IntWritable>) summaryList.get(4);
+        		int tf = positions.size();
+        		summaryList.set(0, new IntWritable(tf));
+            	// df(t): in how many docs this token appears
+        		summaryList.set(1, new IntWritable(df));
+        		// idf(t): log10(N/df)
+        		// define number of docs N:
+        		int N = 6;
+        		double idf = Math.log10(N/(double) df);
+        		summaryList.set(2, new DoubleWritable(idf));
+        		// tf-idf(t, d): tfidf = (1+log(tf))*idf
+        		double tfidf = (1 + Math.log10(tf)) * idf;
+        		summaryList.set(3, new DoubleWritable(tfidf));
+        	}
+        	
         	// System.out.println("reduced token: " + key);
         	iIndex.putAll(summarizeMap);
         	context.write(key, iIndex);
