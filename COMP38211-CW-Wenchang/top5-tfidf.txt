@@ -1,0 +1,43 @@
+tokens number: 1859
+Filename: Bart_the_Fink.txt.gz
+number of tokens in the file: 563
+Top 1 : word: fink, tfidf: 1.8659600160931111
+Top 2 : word: newhart, tfidf: 1.52069625227308
+Top 3 : word: bank, tfidf: 1.3836706188572716
+Top 4 : word: weinstein, tfidf: 1.3836706188572716
+Top 5 : word: check, tfidf: 1.3220556332383775
+Filename: Bart_the_Mother.txt.gz
+number of tokens in the file: 545
+Top 1 : word: bird, tfidf: 1.8070378478622224
+Top 2 : word: lizard, tfidf: 1.715138720499283
+Top 3 : word: kill, tfidf: 1.6179174863861816
+Top 4 : word: nest, tfidf: 1.480891852970373
+Top 5 : word: tenth, tfidf: 1.480891852970373
+Filename: Bart_the_Lover.txt.gz
+number of tokens in the file: 605
+Top 1 : word: woodrow, tfidf: 1.715138720499283
+Top 2 : word: yoyo, tfidf: 1.4357653469175042
+Top 3 : word: gordi, tfidf: 1.3836706188572716
+Top 4 : word: swear, tfidf: 1.3836706188572716
+Top 5 : word: award, tfidf: 1.3220556332383775
+Filename: Bart_the_Murderer.txt.gz
+number of tokens in the file: 573
+Top 1 : word: fat, tfidf: 1.7356266170873533
+Top 2 : word: toni, tfidf: 1.7356266170873533
+Top 3 : word: mafia, tfidf: 1.715138720499283
+Top 4 : word: mantegna, tfidf: 1.6449676628377565
+Top 5 : word: joe, tfidf: 1.52069625227308
+Filename: Bart_the_General.txt.gz
+number of tokens in the file: 482
+Top 1 : word: herman, tfidf: 1.4357653469175042
+Top 2 : word: grampa, tfidf: 1.1494237513283618
+Top 3 : word: jewel, tfidf: 1.1494237513283618
+Top 4 : word: muntz, tfidf: 1.1494237513283618
+Top 5 : word: url, tfidf: 1.1494237513283618
+Filename: Bart_the_Genius.txt.gz
+number of tokens in the file: 578
+Top 1 : word: test, tfidf: 1.3836706188572716
+Top 2 : word: dr, tfidf: 1.3220556332383775
+Top 3 : word: pryor, tfidf: 1.3220556332383775
+Top 4 : word: intellig, tfidf: 1.2466449854414634
+Top 5 : word: attent, tfidf: 1.1494237513283618

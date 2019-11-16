@@ -121,6 +121,7 @@ public class BasicInvertedIndex extends Configured implements Tool
             	
             	// stemming
             	currentToken = stem(currentToken);
+            	
             	// remove stopwords
             	if (StopAnalyser.isStopWord(currentToken)) {
             		continue;
@@ -140,7 +141,12 @@ public class BasicInvertedIndex extends Configured implements Tool
         		}
         		
         		// assume key is the filename, WORD is each token
-        		// context.write(TOKEN, INPUTFILE);
+//            	TOKEN.set(currentToken);
+//            	ArrayListWritable<IntWritable> newArrayListW = new ArrayListWritable<IntWritable>();
+//    			newArrayListW.add(new IntWritable(pos_index));
+//    			HashMapWritable<Text, ArrayListWritable<IntWritable>> filePosMap = new HashMapWritable<Text, ArrayListWritable<IntWritable>>();
+//        		filePosMap.put(INPUTFILE, newArrayListW);
+//        		context.write(TOKEN, filePosMap);
         	}
         	// System.out.println("all:" + pos_index.toString());
         	// System.out.println("in mapper:" + cnt1.toString());
